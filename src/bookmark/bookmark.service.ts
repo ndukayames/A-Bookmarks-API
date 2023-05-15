@@ -7,6 +7,7 @@ import { PrismaService } from 'src/prisma/prisma.service';
 import { NewBookmarkDto } from './dto';
 import { Prisma } from '@prisma/client';
 import { UpdateBookmarkDto } from './dto/update-bookmark.dto';
+import { PagingDto } from 'src/shared/dto/paging.dto';
 
 @Injectable()
 export class BookmarkService {
@@ -77,5 +78,46 @@ export class BookmarkService {
         id: bookmarkId,
       },
     });
+  }
+
+  async getOneOfMyBookmarks(userId: number, bookmarkId: number) {
+    const bookmark = await this.bookmarks.findFirst({
+      where: {
+        id: bookmarkId,
+        userId: userId,
+      },
+    });
+
+    if (!bookmark)
+      throw new NotFoundException('bookmark not found for this user.');
+
+    return bookmark;
+  }
+
+  async getAllOfMyBookmarks(userId: number, pageParam: PagingDto) {
+    const bookmarks = await this.bookmarks.findMany({
+      where: {
+        userId: userId,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      skip: pageParam.skip,
+      take: pageParam.limit,
+    });
+
+    return bookmarks;
+  }
+
+  async getOneBookmark(bookmarkId: number) {
+    const bookmark = await this.bookmarks.findFirst({
+      where: {
+        id: bookmarkId,
+      },
+    });
+
+    if (!bookmark) throw new NotFoundException('bookmark not found.');
+
+    return bookmark;
   }
 }

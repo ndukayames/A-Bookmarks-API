@@ -14,6 +14,8 @@ import { BookmarkService } from './bookmark.service';
 import { NewBookmarkDto } from './dto';
 import { GetUser } from 'src/auth/decorator';
 import { UpdateBookmarkDto } from './dto/update-bookmark.dto';
+import { GetPagingData } from 'src/auth/decorator/get-paging-data.decorator';
+import { PagingDto } from 'src/shared/dto/paging.dto';
 
 @Controller('bookmarks')
 @UseGuards(JwtGuard)
@@ -51,5 +53,20 @@ export class BookmarkController {
     @Param('id', ParseIntPipe) bookmarkId: number,
   ) {
     return this.bookmarkService.deleteBookmark(userId, bookmarkId);
+  }
+  @Get('all')
+  getAllOfMyBookmarks(
+    @GetUser('id') userId: number,
+    @GetPagingData() pagingDto: PagingDto,
+  ) {
+    return this.bookmarkService.getAllOfMyBookmarks(userId, pagingDto);
+  }
+
+  @Get(':id')
+  getOneOfMyBookmarks(
+    @GetUser('id') userId: number,
+    @Param('id', ParseIntPipe) bookmarkId: number,
+  ) {
+    return this.bookmarkService.getOneOfMyBookmarks(userId, bookmarkId);
   }
 }
