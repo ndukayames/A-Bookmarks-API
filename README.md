@@ -58,6 +58,10 @@ $ npm run test:e2e
 $ npm run test:cov
 ```
 
+## Miscellaneous
+This project requires PostgresDB, you may not need to install this if you've got docker.
+You can spin up the docker db by running `npm run dev:bb:up` and then migrate the db by running `npx prisma:dev:deploy`
+
 ## Support
 
 Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
