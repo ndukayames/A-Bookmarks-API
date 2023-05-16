@@ -22,10 +22,6 @@ import { PagingDto } from 'src/shared/dto/paging.dto';
 export class BookmarkController {
   constructor(private bookmarkService: BookmarkService) {}
 
-  @Get()
-  test() {
-    return 'working';
-  }
   @Post()
   createBookmark(
     @GetUser('id') userId: number,
