@@ -93,4 +93,8 @@ export class AuthService {
 
     return { access_token: token };
   }
+
+  async rest() {
+    console.log('res');
+  }
 }

@@ -4,11 +4,16 @@ import {
   Injectable,
   NestInterceptor,
 } from '@nestjs/common';
-import { Observable, map } from 'rxjs';
+import { Request } from 'express';
+import { Observable, map, of } from 'rxjs';
 
 @Injectable()
 export class ResponseInterceptor implements NestInterceptor {
   intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
+    console.log('request is being logged');
+    let request = context.switchToHttp().getRequest<Request>();
+    console.log(request.body);
+
     return next.handle().pipe(
       map((data: any) => ({
         success: true,

@@ -7,6 +7,16 @@ import { JwtStrategy } from './strategy';
 @Module({
   imports: [JwtModule.register({})],
   controllers: [AuthController],
-  providers: [AuthService, JwtStrategy],
+  providers: [
+    {
+      provide: AuthService,
+      useValue: {
+        rest: function () {
+          console.log('resting');
+        },
+      },
+    },
+    JwtStrategy,
+  ],
 })
 export class AuthModule {}
